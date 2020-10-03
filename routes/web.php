@@ -17,6 +17,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia\Inertia::render('Dashboard');
-})->name('dashboard');
+
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return Inertia\Inertia::render('Dashboard');
+    })->name('dashboard');
+
+    Route::get('/admin/documents', function () {
+        return Inertia\Inertia::render('Documents', [
+            'documentTypes' => \App\Models\DocumentType::all()
+        ]);
+    })->name('documents');
+
+    Route::resources([
+        'documents' => \App\Http\Controllers\DocumentController::class,
+        'document-types' => \App\Http\Controllers\DocumentTypeController::class
+    ]);
+
+    Route::redirect('/admin', '/admin/documents');
+});

@@ -14,8 +14,11 @@
 
                         <!-- Navigation Links -->
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                            <jet-nav-link href="/dashboard" :active="$page.currentRouteName == 'dashboard'">
+                            <jet-nav-link href="/admin/dashboard" :active="$page.currentRouteName == 'dashboard'">
                                 Dashboard
+                            </jet-nav-link>
+                            <jet-nav-link href="/admin/documents" :active="$page.currentRouteName == 'documents'">
+                                Dokument
                             </jet-nav-link>
                         </div>
                     </div>

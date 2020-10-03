@@ -16,3 +16,9 @@ mix.js('resources/js/app.js', 'public/js')
         require('postcss-import'),
         require('tailwindcss'),
     ]);
+
+mix.browserSync({
+    proxy: 'moxie.test',
+    host: 'moxie.test',
+    open: 'external',
+})
