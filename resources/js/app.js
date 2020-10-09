@@ -8,10 +8,10 @@ import { InertiaForm } from 'laravel-jetstream';
 import PortalVue from 'portal-vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faFile, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faFile, faTimes, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faFile, faTimes)
+library.add(faFile, faTimes, faEdit, faTrashAlt)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
@@ -35,3 +35,5 @@ new Vue({
             },
         }),
 }).$mount(app);
+
+export function formatBytes(a,b=2){if(0===a)return"0 Bytes";const c=0>b?0:b,d=Math.floor(Math.log(a)/Math.log(1024));return parseFloat((a/Math.pow(1024,d)).toFixed(c))+" "+["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"][d]}

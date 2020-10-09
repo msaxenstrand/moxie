@@ -6,6 +6,7 @@ use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
@@ -16,7 +17,7 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        //
+        return \response(Document::all(), 200);
     }
 
     /**
@@ -48,9 +49,7 @@ class DocumentController extends Controller
            'path' => $path,
            'mime_type' => $mimeType,
            'size' => $size
-        ]))->filter(function ($item, $key) {
-            return $key !== 'document';
-        })->toArray();
+        ]))->toArray();
 
         $document = Document::create($data);
 
@@ -88,7 +87,25 @@ class DocumentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $file = $request->file('document');
+        dump($file);
+        $fileData = [];
+        if ($file) {
+            $document = Document::find($id);
+            $path = $document->path;
+            Storage::delete($path);
+            $fileData = [
+                'file_name' => $file->getClientOriginalName(),
+                'path' => $file->store('documents'),
+                'mime_type' => File::mimeType($file),
+                'size' => File::size($file)
+            ];
+        }
+
+        $data = collect(array_merge($request->all(), $fileData))->toArray();
+
+        $document = Document::find($id)->updateOrCreate(['id' => $id], $data);
+        return \response($document, 200);
     }
 
     /**
@@ -99,6 +116,11 @@ class DocumentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $document = Document::find($id);
+        $path = $document->path;
+        if ($document->delete()) {
+            Storage::delete($path);
+        };
+        return \response('deleted', 200);
     }
 }

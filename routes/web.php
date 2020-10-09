@@ -26,13 +26,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/admin/documents', function () {
         return Inertia\Inertia::render('Documents', [
+            'documents' => \App\Models\Document::all(),
             'documentTypes' => \App\Models\DocumentType::all()
         ]);
     })->name('documents');
 
     Route::resources([
-        'documents' => \App\Http\Controllers\DocumentController::class,
-        'document-types' => \App\Http\Controllers\DocumentTypeController::class
+        'documents' => \App\Http\Controllers\DocumentController::class
     ]);
 
     Route::redirect('/admin', '/admin/documents');

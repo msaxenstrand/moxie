@@ -19,90 +19,41 @@
                 </div>
                 <div class="mb-4">
                     <b-collapse id="collapse-1" class="mt-2" v-model="isOpen">
-                        <b-form @submit.prevent="onSubmit" v-if="show" enctype="multipart/form-data" ref="form">
-                            <b-form-group id="input-group-type" label="Dokumenttyp" label-for="type">
-                                <b-form-select
-                                        id="document_type"
-                                        v-model="form.document_type_id"
-                                        :options="documentTypes"
-                                        value-field="id"
-                                        text-field="name"
-                                        required
-                                ></b-form-select>
-                            </b-form-group>
-
-                            <b-form-group
-                                    id="input-group-title"
-                                    label="Titel"
-                                    label-for="title"
-                            >
-                                <b-form-input
-                                        id="title"
-                                        v-model="form.title"
-                                        type="text"
-                                        required
-                                        placeholder="Titel"
-                                ></b-form-input>
-                            </b-form-group>
-
-                            <b-form-group
-                                    id="input-group-description"
-                                    label="Beskrivning"
-                                    label-for="description"
-                            >
-                                <b-form-textarea
-                                        id="description"
-                                        v-model="form.description"
-                                        type="textarea"
-                                        placeholder="Beskrivning"
-                                ></b-form-textarea>
-                            </b-form-group>
-
-                            <b-form-group
-                                    id="input-group-file"
-                                    label="Fil"
-                                    label-for="file"
-                            >
-                                <b-form-file
-                                        id="document"
-                                        name="document"
-                                        v-model="form.document"
-                                        placeholder="Välj en fil eller dra och släpp den här..."
-                                        drop-placeholder="Släpp filen här..."
-                                        required
-                                ></b-form-file>
-                            </b-form-group>
-
-                            <b-button type="submit" variant="primary">Submit</b-button>
-                            <b-button type="reset" variant="danger">Reset</b-button>
-                        </b-form>
+                        <div v-if="isOpen">
+                            <document-form :document-types="documentTypes" :items-callback="updateItems"></document-form>
+                        </div>
                     </b-collapse>
                 </div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <documents-table></documents-table>
+                    <documents-table :documents="items" :on-edit="handleEdit"></documents-table>
                 </div>
             </div>
         </div>
+        <b-modal id="modal-1" title="Redigera dokument" hide-footer>
+            <document-form :document-types="documentTypes" :items-callback="updateItems" :model="editModel"></document-form>
+        </b-modal>
     </app-layout>
 </template>
 
 <script>
   import AppLayout from './../Layouts/AppLayout';
   import DocumentsTable from './../Components/DocumentsTable';
+  import DocumentForm from '../Components/DocumentForm';
 
   export default {
     components: {
       AppLayout,
       DocumentsTable,
+      DocumentForm
     },
 
-    props: ['documentTypes'],
+    props: ['documents', 'documentTypes'],
 
     data() {
       return {
-        form: {},
-        isOpen: true,
-        show: true
+        isOpen: false,
+        items: this.documents,
+        editModel: null
       };
     },
 
@@ -115,31 +66,17 @@
         this.isOpen = !this.isOpen;
       },
 
-      onSubmit() {
-        const data = new FormData();
-        const { document_type_id, title, description, document} = this.form
-        data.append('document_type_id', document_type_id)
-        data.append('title', title)
-        data.append('description', description)
-        data.append('document', document)
-        this.$inertia.post('/documents', data)
-            .then(() => {
-              this.onReset()
+      handleEdit: function(document) {
+        this.editModel = document
+      },
+
+      updateItems: function() {
+        axios.get('/documents')
+            .then(response => response.data)
+            .then(data => {
+              this.items = data
         })
-      },
-      onReset(evt) {
-        evt && evt.preventDefault();
-        // Reset our form values
-        this.form.document_type_id = null;
-        this.form.title = '';
-        this.form.description = '';
-        this.form.document = null;
-        // Trick to reset/clear native browser form validation state
-        this.show = false;
-        this.$nextTick(() => {
-          this.show = true;
-        });
-      },
+      }
     },
   };
 </script>
