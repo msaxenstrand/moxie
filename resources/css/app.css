@@ -4,3 +4,8 @@
 
 @import 'bootstrap';
 @import 'bootstrap-vue';
+@import 'vue-select/dist/vue-select';
+
+.vs--searchable {
+    background-color: #ffffff;
+}

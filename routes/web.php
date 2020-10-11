@@ -32,7 +32,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('documents');
 
     Route::resources([
-        'documents' => \App\Http\Controllers\DocumentController::class
+        'documents' => \App\Http\Controllers\DocumentController::class,
+        'document-types' => \App\Http\Controllers\DocumentTypeController::class
     ]);
 
     Route::redirect('/admin', '/admin/documents');

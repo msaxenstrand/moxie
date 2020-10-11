@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\DocumentType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
@@ -51,6 +52,15 @@ class DocumentController extends Controller
            'size' => $size
         ]))->toArray();
 
+        $documentType = json_decode($request->get('document_type'), true);
+        if (!isset($documentType['id'])) {
+            $documentType = DocumentType::create([
+                'name' => $documentType['name']
+            ]);
+        }
+
+        $data['document_type_id'] = $documentType->id;
+
         $document = Document::create($data);
 
         return new Response($document, 200);
@@ -88,7 +98,6 @@ class DocumentController extends Controller
     public function update(Request $request, $id)
     {
         $file = $request->file('document');
-        dump($file);
         $fileData = [];
         if ($file) {
             $document = Document::find($id);

@@ -20,7 +20,7 @@
                 <div class="mb-4">
                     <b-collapse id="collapse-1" class="mt-2" v-model="isOpen">
                         <div v-if="isOpen">
-                            <document-form :document-types="documentTypes" :items-callback="updateItems"></document-form>
+                            <document-form :document-types="documentTypeItems" :items-callback="updateItems"></document-form>
                         </div>
                     </b-collapse>
                 </div>
@@ -30,7 +30,7 @@
             </div>
         </div>
         <b-modal id="modal-1" title="Redigera dokument" hide-footer>
-            <document-form :document-types="documentTypes" :items-callback="updateItems" :model="editModel"></document-form>
+            <document-form :document-types="documentTypeItems" :items-callback="updateItems" :model="editModel"></document-form>
         </b-modal>
     </app-layout>
 </template>
@@ -53,6 +53,7 @@
       return {
         isOpen: false,
         items: this.documents,
+        documentTypeItems: this.documentTypes,
         editModel: null
       };
     },
@@ -75,6 +76,12 @@
             .then(response => response.data)
             .then(data => {
               this.items = data
+        })
+
+        axios.get('/document-types')
+        .then(response => response.data)
+        .then(data => {
+          this.documentTypeItems = data
         })
       }
     },

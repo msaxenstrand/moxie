@@ -1,14 +1,23 @@
 <template>
     <b-form @submit.prevent="onSubmit" v-if="show" ref="form">
         <b-form-group id="input-group-type" label="Dokumenttyp" label-for="type">
-            <b-form-select
-                    id="document_type"
-                    v-model="form.document_type_id"
+            <v-select
                     :options="documentTypes"
-                    value-field="id"
-                    text-field="name"
-                    required
-            ></b-form-select>
+                    v-model="form.document_type"
+                    label="name"
+                    placeholder="Välj typ av dokument eller skriv in en ny typ och tryck Enter"
+                    taggable
+                    searchable
+            >
+                <template #search="{attributes, events}">
+                    <input
+                            class="vs__search"
+                            :required="!form.document_type"
+                            v-bind="attributes"
+                            v-on="events"
+                    />
+                </template>
+            </v-select>
         </b-form-group>
 
         <b-form-group
@@ -80,8 +89,8 @@
     methods: {
       onSubmit() {
         const data = new FormData();
-        const { document_type_id, title, description, document } = this.form
-        data.append('document_type_id', document_type_id)
+        const { document_type, title, description, document } = this.form
+        data.append('document_type', JSON.stringify(document_type))
         data.append('title', title)
         data.append('description', description || '')
         data.append('document', document)
@@ -102,7 +111,7 @@
       onReset(evt) {
         evt && evt.preventDefault();
         // Reset our form values
-        this.form.document_type_id = null;
+        this.form.document_type = null;
         this.form.title = '';
         this.form.description = '';
         this.form.document = null;

@@ -1,6 +1,7 @@
 require('./bootstrap');
 
 import Vue from 'vue';
+import vSelect from 'vue-select'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 import { InertiaApp } from '@inertiajs/inertia-vue';
@@ -14,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(faFile, faTimes, faEdit, faTrashAlt)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('v-select', vSelect)
 
 Vue.use(InertiaApp);
 Vue.use(InertiaForm);
