@@ -21,6 +21,18 @@
         </b-form-group>
 
         <b-form-group
+                id="input-group-year"
+                label="År"
+                label-for="year"
+        >
+            <b-form-select
+                    v-model="form.year"
+                    :options="yearOptions"
+                    size="sm">
+            </b-form-select>
+        </b-form-group>
+
+        <b-form-group
                 id="input-group-title"
                 label="Titel"
                 label-for="title"
@@ -81,19 +93,28 @@
 
     data() {
       return {
-        form: {...this.model} || {},
-        show: true
+        form: this.model ? {...this.model} : {
+          year: '2020/2021'
+        },
+        show: true,
+        yearOptions: [
+          { value: '2017/2018', text: '2017/2018' },
+          { value: '2018/2019', text: '2018/2019' },
+          { value: '2019/2020', text: '2019/2020' },
+          { value: '2020/2021', text: '2020/2021' }
+        ]
       }
     },
 
     methods: {
       onSubmit() {
         const data = new FormData();
-        const { document_type, title, description, document } = this.form
+        const { document_type, title, description, document, year } = this.form
         data.append('document_type', JSON.stringify(document_type))
         data.append('title', title)
         data.append('description', description || '')
         data.append('document', document)
+        data.append('year', year)
         this.model && data.append("_method", "put")
 
         axios({

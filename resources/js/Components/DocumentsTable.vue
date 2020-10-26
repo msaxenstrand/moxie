@@ -46,6 +46,11 @@
             sortable: true
           },
           {
+            key: 'year',
+            label: 'År',
+            sortable: true
+          },
+          {
             key: 'size',
             label: 'Storlek',
             sortable: true

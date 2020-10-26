@@ -17,6 +17,7 @@ class CreateDocumentsTable extends Migration
             $table->id();
             $table->string('title');
             $table->longText('description')->nullable();
+            $table->string('year');
             $table->string('file_name');
             $table->string('path');
             $table->bigInteger('size');

@@ -59,7 +59,7 @@ class DocumentController extends Controller
             ]);
         }
 
-        $data['document_type_id'] = $documentType->id;
+        $data['document_type_id'] = $documentType['id'];
 
         $document = Document::create($data);
 
@@ -74,7 +74,12 @@ class DocumentController extends Controller
      */
     public function show($id)
     {
-        //
+        $document = Document::find($id);
+        $contents = Storage::get($document->path);
+
+        $response = Response($contents,200);
+        $response->header('Content-Type', $document->mime_type);
+        return $response;
     }
 
     /**
@@ -131,5 +136,10 @@ class DocumentController extends Controller
             Storage::delete($path);
         };
         return \response('deleted', 200);
+    }
+
+    public function download(Request $request, $id)
+    {
+
     }
 }
