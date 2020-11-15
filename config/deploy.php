@@ -61,7 +61,7 @@ return [
             'artisan:view:clear',
             'artisan:config:cache',
             'artisan:migrate',
-            'artisan:horizon:terminate',
+//            'artisan:horizon:terminate',
         ],
 
         // Deployment is done and live
@@ -114,8 +114,8 @@ return [
     */
 
     'hosts' => [
-        '209.97.181.248' => [
-            'deploy_path' => '/var/www/html',
+        '143.110.168.215' => [
+            'deploy_path' => '/var/www/moxie-doc',
             'user' => 'root',
         ],
     ],

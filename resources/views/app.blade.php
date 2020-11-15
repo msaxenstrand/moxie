@@ -19,19 +19,20 @@
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
-        <header>
-            <div class="container-fluid">
+
                 @if (Route::has('login'))
-                    <div class="d-flex justify-content-end align-items-center">
                         @auth
-                            <a href="{{ url('/admin/documents') }}" class="text-sm text-gray-700 underline">Admin</a>
+
                         @else
-                            <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Logga in</a>
+                            <header>
+                                <div class="container-fluid">
+                                    <div class="d-flex justify-content-end align-items-center">
+                                        <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Logga in</a>
+                                    </div>
+                                </div>
+                            </header>
                         @endif
-                    </div>
                 @endif
-            </div>
-        </header>
         @inertia
     </body>
 </html>
