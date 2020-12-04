@@ -33,3 +33,32 @@ header {
 .cls-2 {
     fill: #f15a22;
 }
+
+.document-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    line-height: 1.1;
+    margin-bottom: .5rem;
+    transition: all 250ms ease-in-out;
+    padding: .5rem;
+
+    i {
+        color: #ae978f;
+    }
+
+    a {
+        color: #f15a22;
+    }
+
+    .download {
+        opacity: 0;
+        transition: opacity 250ms ease-in-out;
+    }
+
+    &:hover {
+        .download {
+            opacity: 1;
+        }
+    }
+}
