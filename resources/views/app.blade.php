@@ -19,6 +19,7 @@
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
+        @if (!Request::is('admin/*'))
         <header>
         <div class="container-fluid">
             <div class="d-flex justify-content-between align-items-center">
@@ -130,6 +131,7 @@
 
         </div>
     </header>
+        @endif
         @inertia
     </body>
 </html>
